@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch:*)",
+      "Bash(ls:*)",
+      "SlashCommand(/speckit.tasks)",
+      "Bash(powershell.exe:*)",
+      "SlashCommand(/speckit.specify)",
+      "Bash(find ./physical-ai-humanoid-robotics -name \"package.json\" -exec cat {} ;)",
+      "Bash(find . -path \"./.git\" -prune -o -name \"*.yml\" -name \"*.yaml\" -exec grep -l \"github\\|workflow\\|action\" {} ;)",
+      "SlashCommand(/speckit.implement)",
+      "Bash(powershell -ExecutionPolicy Bypass -File ./check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks)",
+      "Bash(if [ -d \"C:\\book\\book\\specs\\001-robotics-textbook\\checklists\" ])",
+      "Bash(then ls -la \"C:\\book\\book\\specs\\001-robotics-textbook\\checklists\")",
+      "Bash(else echo \"No checklists directory found\")",
+      "Bash(fi)",
+      "Bash(npm start)",
+      "Bash(git init)",
+      "Bash(git add physical-ai-humanoid-robotics/)",
+      "Bash(git commit -m \"Add comprehensive Physical AI & Humanoid Robotics textbook with 4 modules and Docusaurus site\")",
+      "Bash(git add .specify/memory/constitution.md .specify/templates/spec-template.md)",
+      "Bash(git commit -m \"book\")",
+      "Bash(git branch -M main)",
+      "Bash(git remote add origin https://github.com/shahzad1050/Physical-AI-Humanoid-book.git)",
+      "Bash(git push -u origin main)",
+      "Bash(npm run build)",
+      "Bash(npm run deploy)",
+      "Bash(GIT_USER=shahzad1050 npm run deploy)",
+      "Bash(git add docusaurus.config.ts)",
+      "Bash(git commit -m \"Update GitHub Pages configuration\")",
+      "Bash(git push origin main)",
+      "Bash(git checkout -b gh-pages)",
+      "Bash(git push -u origin gh-pages)",
+      "Bash(git checkout main)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
