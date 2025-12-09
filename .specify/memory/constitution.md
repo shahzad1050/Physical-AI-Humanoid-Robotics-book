@@ -1,50 +1,51 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- Sync Impact Report:
+Version change: 0.0.0 -> 1.0.0 (MAJOR: Initial creation)
+Modified principles: N/A (new)
+Added sections: Core Principles, Book Requirements & Technologies, Mandatory Behavior Rules & Development Guidelines, Governance
+Removed sections: N/A
+Templates requiring updates:
+- .specify/templates/plan-template.md: ✅ updated
+- .specify/templates/spec-template.md: ✅ updated
+- .specify/templates/tasks-template.md: ✅ updated
+- .specify/templates/commands/*.md: ✅ updated
+Follow-up TODOs: N/A
+-->
+# Physical AI & Humanoid Robotics Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Introduction to Physical AI
+Foundations of embodied intelligence; transition from digital AI to robots that understand physical laws; humanoid robotics landscape; sensors: LIDAR, cameras, IMUs, F/T sensors.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. ROS 2 Fundamentals
+ROS 2 architecture; nodes, topics, services, actions; ROS 2 packages with Python; launch files & parameter management.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Robot Simulation with Gazebo
+Environment setup; URDF & SDF formats; physics & sensor simulation; Unity for robot visualization.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. NVIDIA Isaac Platform
+Isaac SDK + Isaac Sim; AI perception and manipulation; reinforcement learning for control; sim-to-real transfer techniques.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Humanoid Robot Development
+Kinematics & dynamics; bipedal locomotion & balance; manipulation & grasping; human-robot interaction design.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Book Requirements & Technologies
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+The system MUST produce a complete Docusaurus textbook with clear module-based chapters, code examples, diagrams (Auto-generated or using Mermaid.js), ROS 2, Gazebo, Unity, and Isaac tutorials. The textbook MUST be structured for deployment on GitHub Pages via Docusaurus.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Technologies covered include: ROS 2, Gazebo, Unity, NVIDIA Isaac SDK & Isaac Sim, and GPT-based conversational robotics.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Mandatory Behavior Rules & Development Guidelines
+
+Always follow Spec-Kit-Plus format.
+Always generate files in correct Docusaurus structure.
+Always produce consistent navigation & sidebar configs.
+Never omit weekly content.
+Never break global theme of “Physical AI & Humanoid Robotics.”
+The book MUST be created as a fully working Docusaurus project.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other practices. Amendments require documentation, approval, and a migration plan. All PRs/reviews MUST verify compliance. Complexity MUST be justified. The book MUST be created as a fully working Docusaurus project and deployed on GitHub Pages.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-12-07 | **Last Amended**: 2025-12-07
