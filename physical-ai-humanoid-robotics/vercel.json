@@ -16,7 +16,8 @@
   ],
   "build": {
     "env": {
-      "NODE_VERSION": "24.x"
+      "NODE_VERSION": "24.x",
+      "BASE_URL": "/"
     }
   }
 }
