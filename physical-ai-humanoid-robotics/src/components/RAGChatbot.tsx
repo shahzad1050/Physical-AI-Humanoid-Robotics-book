@@ -12,12 +12,20 @@ const RAGChatbot: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Only render on client side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Configuration for the backend API
-  const API_BASE_URL = typeof window !== 'undefined' 
-    ? (process.env.NEXT_PUBLIC_API_BASE_URL || process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000')
-    : 'http://localhost:8000';
+  const API_BASE_URL = isClient 
+    ? (typeof window !== 'undefined' 
+        ? (globalThis.NEXT_PUBLIC_API_BASE_URL || 'https://physical-ai-humanoid-book-theta.vercel.app')
+        : 'https://physical-ai-humanoid-book-theta.vercel.app')
+    : 'https://physical-ai-humanoid-book-theta.vercel.app';
 
   // Scroll to bottom of messages when new messages are added
   useEffect(() => {
@@ -166,6 +174,11 @@ const RAGChatbot: React.FC = () => {
     setSessionId(null);
     setError(null);
   };
+
+  // Don't render until client-side
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <>
