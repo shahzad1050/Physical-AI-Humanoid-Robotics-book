@@ -50,6 +50,9 @@ const RAGChatbot: React.FC = () => {
       timestamp: new Date()
     };
 
+    // Save the message before clearing input
+    const messageText = inputValue;
+    
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInputValue('');
@@ -58,13 +61,16 @@ const RAGChatbot: React.FC = () => {
 
     try {
       const requestBody: any = {
-        message: inputValue,
+        message: messageText,
         top_k: 5
       };
 
       if (sessionId) {
         requestBody.session_id = sessionId;
       }
+
+      console.log('Sending request to:', `${API_BASE_URL}/chat`);
+      console.log('Request body:', requestBody);
 
       const response = await fetch(`${API_BASE_URL}/chat`, {
         method: 'POST',
@@ -74,11 +80,16 @@ const RAGChatbot: React.FC = () => {
         body: JSON.stringify(requestBody)
       });
 
+      console.log('Response status:', response.status);
+
       if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(`API request failed with status ${response.status}: ${errorText}`);
       }
 
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (data.session_id && !sessionId) {
         setSessionId(data.session_id);
@@ -97,6 +108,11 @@ const RAGChatbot: React.FC = () => {
     } catch (err: any) {
       console.error('Error sending message:', err);
       setError(`Failed to get response: ${err.message}`);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
       const errorMessage = {
         id: Date.now() + 1,
@@ -122,11 +138,18 @@ const RAGChatbot: React.FC = () => {
   const formatSources = (sources: any[]) => {
     if (!sources || sources.length === 0) return null;
 
+    // Filter out Unknown sources
+    const validSources = sources.filter(source => 
+      source.relative_path && source.relative_path !== 'Unknown'
+    );
+
+    if (validSources.length === 0) return null;
+
     return (
       <div className="sources-section">
         <h4>Sources:</h4>
         <ul className="sources-list">
-          {sources.map((source, index) => (
+          {validSources.map((source, index) => (
             <li key={index} className="source-item">
               <div className="source-path">{source.relative_path}</div>
               <div className="source-score">Relevance: {(source.score * 100).toFixed(1)}%</div>
