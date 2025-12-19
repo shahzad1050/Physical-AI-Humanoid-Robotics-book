@@ -1,131 +1,73 @@
-"""
-Embedding generation service for the RAG Chatbot
-"""
-from typing import List, Dict, Any
+import os
+import google.generativeai as genai
+import psycopg2
+from psycopg2 import extras
 import numpy as np
-from cohere import Client
 from dotenv import load_dotenv
-import logging
 
-from ..utils import get_logger
-from ..config import settings
+from backend.config import settings
 
-# Load environment variables
 load_dotenv()
-
-logger = get_logger(__name__)
-
 
 class EmbeddingService:
     """
-    Service for generating embeddings using Cohere API
+    Service to handle embedding and storing of documents.
     """
     def __init__(self):
-        self.client = Client(settings.cohere_api_key)
-        self.model = settings.embedding_model
-        self.input_type = settings.embedding_input_type
-        self.dimensions = settings.embedding_dimensions
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        self.conn = psycopg2.connect(settings.neon_connection_string)
+        from pgvector.psycopg2 import register_vector
+        register_vector(self.conn)
+        self.table_name = "documents"
 
-    def embed_text(self, text: str) -> List[float]:
+    def embed_and_store(self, chunks, metadata):
         """
-        Generate embedding for a single text
-
-        Args:
-            text: Input text to embed
-
-        Returns:
-            Embedding vector as a list of floats
-        """
-        try:
-            response = self.client.embed(
-                texts=[text],
-                model=self.model,
-                input_type=self.input_type
-            )
-            return response.embeddings[0]
-        except Exception as e:
-            logger.error(f"Error generating embedding for text: {str(e)}")
-            raise e
-
-    def embed_texts(self, texts: List[str]) -> List[List[float]]:
-        """
-        Generate embeddings for multiple texts
-
-        Args:
-            texts: List of input texts to embed
-
-        Returns:
-            List of embedding vectors
-        """
-        if not texts:
-            return []
-
-        try:
-            response = self.client.embed(
-                texts=texts,
-                model=self.model,
-                input_type=self.input_type
-            )
-            return [embedding for embedding in response.embeddings]
-        except Exception as e:
-            logger.error(f"Error generating embeddings for texts: {str(e)}")
-            raise e
-
-    def embed_document_chunks(self, chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """
-        Generate embeddings for document chunks
-
-        Args:
-            chunks: List of document chunks with content and metadata
-
-        Returns:
-            List of document chunks with embeddings added
+        Embeds a list of text chunks and stores them in the database.
         """
         if not chunks:
-            return []
+            return
 
-        # Extract just the content for embedding
-        texts = [chunk['content'] for chunk in chunks]
+        # --- Embed chunks ---
+        embeddings = self.embed_texts(chunks)
 
-        try:
-            embeddings = self.embed_texts(texts)
-
-            # Add embeddings back to the chunks
+        # --- Store in database ---
+        with self.conn.cursor() as cur:
             for i, chunk in enumerate(chunks):
-                chunk['embedding'] = embeddings[i]
+                # Add chunk index to metadata
+                chunk_metadata = metadata.copy()
+                chunk_metadata["chunk_index"] = i
+                
+                cur.execute(
+                    f"INSERT INTO {self.table_name} (content, metadata, embedding) VALUES (%s, %s, %s)",
+                    (chunk, extras.Json(chunk_metadata), np.array(embeddings[i]))
+                )
+        self.conn.commit()
 
-            return chunks
-        except Exception as e:
-            logger.error(f"Error embedding document chunks: {str(e)}")
-            raise e
-
-    def validate_embedding(self, embedding: List[float]) -> bool:
+    def embed_texts(self, texts):
         """
-        Validate that an embedding has the correct dimensions
-
-        Args:
-            embedding: Embedding vector to validate
-
-        Returns:
-            True if valid, False otherwise
+        Embeds a list of texts using the Google Generative AI client.
         """
-        if len(embedding) != self.dimensions:
-            logger.warning(f"Embedding has {len(embedding)} dimensions, expected {self.dimensions}")
-            return False
-        return True
+        result = genai.embed_content(
+            model="models/text-embedding-004",
+            content=texts,
+            task_type="retrieval_document"
+        )
+        return result['embedding']
 
-    def normalize_embedding(self, embedding: List[float]) -> List[float]:
+    def embed_text(self, text):
         """
-        Normalize an embedding vector to unit length
-
-        Args:
-            embedding: Embedding vector to normalize
-
-        Returns:
-            Normalized embedding vector
+        Embeds a single text using the Google Generative AI client.
         """
-        arr = np.array(embedding)
-        norm = np.linalg.norm(arr)
-        if norm == 0:
-            return embedding
-        return (arr / norm).tolist()
+        result = genai.embed_content(
+            model="models/text-embedding-004",
+            content=text,
+            task_type="retrieval_query"
+        )
+        return result['embedding']
+
+    def __del__(self):
+        """
+        Destructor to close the database connection.
+        """
+        if self.conn:
+            self.conn.close()

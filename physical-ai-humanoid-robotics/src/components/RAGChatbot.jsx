@@ -14,8 +14,10 @@ const RAGChatbot = () => {
   const [sessionId, setSessionId] = useState(null); // Track session ID
   const messagesEndRef = useRef(null);
 
-  // Configuration for the backend API
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+  // Configuration for the backend API - using window object to avoid process.env issues in browser
+  const API_BASE_URL = (typeof window !== 'undefined' && window.REACT_APP_API_BASE_URL)
+    ? window.REACT_APP_API_BASE_URL
+    : 'http://localhost:8000';
 
   // Scroll to bottom of messages when new messages are added
   useEffect(() => {

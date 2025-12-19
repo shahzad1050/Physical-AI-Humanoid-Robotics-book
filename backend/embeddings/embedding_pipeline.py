@@ -32,7 +32,7 @@ def _check_and_create_table(conn):
             id SERIAL PRIMARY KEY,
             content TEXT,
             metadata JSONB,
-            embedding VECTOR(1024)
+            embedding VECTOR(768)
         )
         """)
         conn.commit()

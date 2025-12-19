@@ -20,12 +20,12 @@ const RAGChatbot: React.FC = () => {
     setIsClient(true);
   }, []);
 
-  // Configuration for the backend API
-  const API_BASE_URL = isClient 
-    ? (typeof window !== 'undefined' 
-        ? (globalThis.NEXT_PUBLIC_API_BASE_URL || 'https://physical-ai-humanoid-book-theta.vercel.app')
-        : 'https://physical-ai-humanoid-book-theta.vercel.app')
-    : 'https://physical-ai-humanoid-book-theta.vercel.app';
+  // Configuration for the backend API - using window object to avoid process.env issues in browser
+  const API_BASE_URL = isClient
+    ? (typeof window !== 'undefined' && (window as any).NEXT_PUBLIC_API_BASE_URL
+        ? (window as any).NEXT_PUBLIC_API_BASE_URL
+        : 'http://localhost:8002')  // Agent service with Cohere and Qdrant
+    : 'http://localhost:8002';  // Agent service with Cohere and Qdrant
 
   // Scroll to bottom of messages when new messages are added
   useEffect(() => {
@@ -108,7 +108,7 @@ const RAGChatbot: React.FC = () => {
         text: data.response,
         sender: 'bot',
         timestamp: new Date(),
-        sources: data.sources || [],
+        sources: data.context_used || [],
         context_used: data.context_used || []
       };
 
@@ -116,11 +116,6 @@ const RAGChatbot: React.FC = () => {
     } catch (err: any) {
       console.error('Error sending message:', err);
       setError(`Failed to get response: ${err.message}`);
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
       const errorMessage = {
         id: Date.now() + 1,
