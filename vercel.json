@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "buildCommand": "cd physical-ai-humanoid-robotics && npm run build",
+  "env": {
+    "NEXT_PUBLIC_API_BASE_URL": "@api_base_url",
+    "DOCUSAURUS_URL": "https://physical-ai-humanoid-book-theta.vercel.app",
+    "DOCUSAURUS_BASE_URL": "/"
+  },
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "physical-ai-humanoid-robotics/package.json",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "physical-ai-humanoid-robotics/build/$1",
+      "status": 404
+    }
+  ]
+}

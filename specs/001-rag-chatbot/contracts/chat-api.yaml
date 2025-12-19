@@ -1,0 +1,151 @@
+openapi: 3.0.0
+info:
+  title: RAG Chatbot API
+  description: API for the RAG Chatbot for Physical AI & Humanoid Robotics Documentation
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Development server
+
+paths:
+  /chat:
+    post:
+      summary: Process user query and return RAG response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  description: User's question/query
+                  example: "What is the NVIDIA Isaac platform?"
+                top_k:
+                  type: integer
+                  description: Number of top results to retrieve
+                  default: 5
+                  minimum: 1
+                  maximum: 10
+                  example: 3
+      responses:
+        '200':
+          description: Successful response with answer and context
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - response
+                  - context_used
+                  - query
+                properties:
+                  response:
+                    type: string
+                    description: Generated response to the user's query
+                    example: "The NVIDIA Isaac platform is a comprehensive ecosystem designed for developing, simulating, and deploying AI-powered robots..."
+                  context_used:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Document chunk ID
+                        content:
+                          type: string
+                          description: Content of the relevant document chunk
+                        metadata:
+                          type: object
+                          properties:
+                            relative_path:
+                              type: string
+                              description: Path to source document
+                        score:
+                          type: number
+                          format: float
+                          description: Relevance score (0-1)
+                    description: List of document chunks used to generate the response
+                  query:
+                    type: string
+                    description: Original user query
+        '400':
+          description: Bad request - invalid input
+        '500':
+          description: Internal server error
+  /health:
+    get:
+      summary: Check API health status
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2025-12-13T10:30:00Z"
+
+components:
+  schemas:
+    ChatRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: User's question/query
+        top_k:
+          type: integer
+          description: Number of top results to retrieve
+          default: 5
+          minimum: 1
+          maximum: 10
+
+    ChatResponse:
+      type: object
+      required:
+        - response
+        - context_used
+        - query
+      properties:
+        response:
+          type: string
+          description: Generated response to the user's query
+        context_used:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentContext'
+        query:
+          type: string
+          description: Original user query
+
+    DocumentContext:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Document chunk ID
+        content:
+          type: string
+          description: Content of the relevant document chunk
+        metadata:
+          type: object
+          properties:
+            relative_path:
+              type: string
+              description: Path to source document
+        score:
+          type: number
+          format: float
+          description: Relevance score (0-1)

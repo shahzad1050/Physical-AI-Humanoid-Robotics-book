@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_ZW2HO8UjpBGk9R3HSu1zi7Oa3DXI",
+  "orgId": "team_KBJT5uJ3ZiGLXhg9muKHRrCs",
+  "projectName": "physical-ai-humanoid-robotics",
+  "settings": {
+    "createdAt": 1765892015048,
+    "framework": null,
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}
