@@ -101,7 +101,9 @@
       "Bash(python -c \"from backend import app; import uvicorn; uvicorn.run\\(app, host=''0.0.0.0'', port=8002\\)\")",
       "Bash(curl -m 10 http://localhost:8002/)",
       "Bash(curl -m 10 http://localhost:8002/docs)",
-      "Bash(curl -X POST http://localhost:8002/chat -H \"Content-Type: application/json\" -d \"{\"\"message\"\":\"\"Hello from documentation test\"\",\"\"top_k\"\":3}\")"
+      "Bash(curl -X POST http://localhost:8002/chat -H \"Content-Type: application/json\" -d \"{\"\"message\"\":\"\"Hello from documentation test\"\",\"\"top_k\"\":3}\")",
+      "Bash(dir C:bookbookphysical-ai-humanoid-robotics)",
+      "Bash(npm run)"
     ],
     "deny": [],
     "ask": []
