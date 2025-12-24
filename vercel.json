@@ -2,7 +2,7 @@
   "version": 2,
   "buildCommand": "cd physical-ai-humanoid-robotics && npm run build",
   "env": {
-    "NEXT_PUBLIC_API_BASE_URL": "@api_base_url",
+    "NEXT_PUBLIC_API_BASE_URL": "http://localhost:8002",
     "DOCUSAURUS_URL": "https://physical-ai-humanoid-book-theta.vercel.app",
     "DOCUSAURUS_BASE_URL": "/"
   },
