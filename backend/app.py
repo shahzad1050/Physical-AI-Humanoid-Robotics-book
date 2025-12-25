@@ -1,4 +1,4 @@
-# Simple FastAPI server that avoids the problematic BaseModel issue
+# FastAPI server for Vercel deployment
 from fastapi import FastAPI
 from typing import List, Optional, Dict, Any
 
@@ -7,8 +7,8 @@ app = FastAPI(
     title="Physical AI & Humanoid Robotics RAG API",
     description="API for the Physical AI & Humanoid Robotics documentation chatbot",
     version="1.0.0",
-    docs_url="/docs",  # This enables the interactive API documentation
-    redoc_url="/redoc"  # This enables the ReDoc documentation
+    docs_url="/api/docs",  # Changed to avoid conflicts with Docusaurus routes
+    redoc_url="/api/redoc"  # Changed to avoid conflicts with Docusaurus routes
 )
 
 # Simple dictionary-based approach to avoid Pydantic BaseModel issues
@@ -17,7 +17,7 @@ async def chat_endpoint(message: str, top_k: Optional[int] = 3):
     """
     Main RAG chat endpoint that retrieves context and generates response
     """
-    # Mock response for testing
+    # Mock response for testing - in production, this would connect to your RAG system
     response = f"Mock response to: {message}"
     context_used = [
         {
@@ -50,6 +50,7 @@ async def test_json_endpoint():
     """
     return {"hello": "world", "status": "ok"}
 
+# For local development only
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8002)

@@ -12,4 +12,5 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from backend.app import app
 
 # Export the app for Vercel
-__all__ = ['app']
+app_instance = app
+__all__ = ['app_instance']
