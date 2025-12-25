@@ -15,9 +15,7 @@ const RAGChatbot = () => {
   const messagesEndRef = useRef(null);
 
   // Configuration for the backend API - using window object to avoid process.env issues in browser
-  const API_BASE_URL = (typeof window !== 'undefined' && window.REACT_APP_API_BASE_URL)
-    ? window.REACT_APP_API_BASE_URL
-    : 'http://localhost:8000';
+  const API_BASE_URL = '';
 
   // Scroll to bottom of messages when new messages are added
   useEffect(() => {
