@@ -20,11 +20,6 @@
     {
       "src": "/api/(.*)",
       "dest": "api/index.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "physical-ai-humanoid-robotics/build/$1",
-      "status": 404
     }
   ]
 }
