@@ -103,7 +103,8 @@
       "Bash(curl -m 10 http://localhost:8002/docs)",
       "Bash(curl -X POST http://localhost:8002/chat -H \"Content-Type: application/json\" -d \"{\"\"message\"\":\"\"Hello from documentation test\"\",\"\"top_k\"\":3}\")",
       "Bash(dir C:bookbookphysical-ai-humanoid-robotics)",
-      "Bash(npm run)"
+      "Bash(npm run)",
+      "Bash(curl -I http://localhost:3001/)"
     ],
     "deny": [],
     "ask": []
