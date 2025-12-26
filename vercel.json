@@ -1,5 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "cd physical-ai-humanoid-robotics && npm run build",
+  "buildCommand": "cd physical-ai-humanoid-robotics && ./node_modules/.bin/docusaurus build",
   "outputDirectory": "physical-ai-humanoid-robotics/build"
 }
