@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "buildCommand": "cd physical-ai-humanoid-robotics && npm run build",
+  "outputDirectory": "physical-ai-humanoid-robotics/build",
+  "env": {
+    "NEXT_PUBLIC_API_BASE_URL": "https://physical-ai-humanoid-book.vercel.app/api",
+    "DOCUSAURUS_URL": "https://physical-ai-humanoid-book.vercel.app",
+    "DOCUSAURUS_BASE_URL": "/"
+  },
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.9"
+    }
+  }
+}
